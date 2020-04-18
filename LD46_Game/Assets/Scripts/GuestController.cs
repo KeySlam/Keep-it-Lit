@@ -33,7 +33,7 @@ public class GuestController : MonoBehaviour
 
 	private void Update()
 	{
-		seekTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		//seekTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		steering = Vector2.zero;
 
 		Seek();
