@@ -57,6 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5836482251709018888}
   - component: {fileID: 5836482251709018891}
+  - component: {fileID: 559276757674771906}
   m_Layer: 0
   m_Name: Guest
   m_TagString: Untagged
@@ -98,6 +99,28 @@ MonoBehaviour:
   personalSpace: 8
   avoidanceForce: 800
   collider: {fileID: 5836482250281187308}
+  rigidbody: {fileID: 559276757674771906}
+--- !u!50 &559276757674771906
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5836482251709018890}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!1 &5836482251782803058
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,8 +189,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 205277385
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f0f62689bba3e124ba683b76f60d1422, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

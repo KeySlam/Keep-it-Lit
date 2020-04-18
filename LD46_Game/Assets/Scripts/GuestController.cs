@@ -21,32 +21,30 @@ public class GuestController : MonoBehaviour
 	[SerializeField]
 	private new Collider2D collider = null;
 
+	[SerializeField]
+	private new Rigidbody2D rigidbody = null;
+
 	private Vector2 velocity = default;
 	private Vector2 steering = default;
 
 	private Vector2 seekTarget = default;
 
-	private void Awake()
+	private void FixedUpdate()
 	{
-
-	}
-
-	private void Update()
-	{
-		//seekTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		seekTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		steering = Vector2.zero;
 
 		Seek();
 		Avoid();
 
 		Vector2.ClampMagnitude(steering, maxSteeringForce);
-		steering *= Time.deltaTime;
+		steering *= Time.fixedDeltaTime;
 
 		velocity += steering;
 		Vector2.ClampMagnitude(velocity, maxVelocity);
-		velocity *= Time.deltaTime;
+		velocity *= Time.fixedDeltaTime;
 
-		transform.Translate(velocity);
+		rigidbody.position += velocity;
 	}
 
 	private void Seek()

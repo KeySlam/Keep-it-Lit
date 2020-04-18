@@ -4,28 +4,42 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-	public class Interaction
+	[SerializeField]
+	protected InteractableIcon notEligibleIcon = null;
+
+	public abstract class Interaction
 	{
-		public bool active;
 		public InteractableIcon icon = null;
-		public Action<Interaction> execute;
-		
-		public Interaction(bool active, InteractableIcon icon, Action<Interaction> execute)
+		public InteractableIcon iconNotEligible = null;
+		public bool active = false;
+
+		private InteractableIcon activeIcon = null;
+
+		public Interaction(InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true)
 		{
-			this.active = active;
 			this.icon = icon;
-			this.execute = execute;
+			this.iconNotEligible = iconNotEligible;
+			this.active = active;
 		}
 
-		public void ShowIcon()
+		public void ShowIcon(bool eligible)
 		{
-			icon.Show();
+			if (eligible)
+				activeIcon = icon;
+			else
+				activeIcon = iconNotEligible;
+
+			activeIcon.Show();
 		}
 
 		public void HideIcon()
 		{
-			icon.Hide();
+			activeIcon.Hide();
+			activeIcon = null;
 		}
+
+		public abstract void Execute(PlayerController playerController);
+		public abstract bool IsEligible(PlayerController playerController);
 	}
 
 	public List<Interaction> interactions = new List<Interaction>();

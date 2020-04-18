@@ -14,9 +14,14 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private new Collider2D collider = null;
 
-	private HashSet<Interactable.Interaction> openInteractions = new HashSet<Interactable.Interaction>();
+	[SerializeField]
+	private new Rigidbody2D rigidbody = null;
 
-	void Update()
+	public Carryable carrying = null;
+	private Interactable.Interaction openInteraction = null;
+	private Interactable.Interaction prefInteraction = null;
+
+	void FixedUpdate()
 	{
 		float horizontal = Input.GetAxisRaw("Horizontal");
 		float vertical = Input.GetAxisRaw("Vertical");
@@ -26,62 +31,57 @@ public class PlayerController : MonoBehaviour
 		Vector2 movementVector = new Vector2(horizontal, vertical).normalized;
 		movementVector *= movementSpeed;
 
-		transform.position += (Vector3)movementVector * Time.deltaTime;
+		rigidbody.position += movementVector * Time.fixedDeltaTime;
+	}
 
+	private void Update()
+	{
 		collider.enabled = false;
 		RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRange, Vector2.zero);
 		collider.enabled = true;
 
-
-		HashSet<Interactable.Interaction> nearInteractions = new HashSet<Interactable.Interaction>();
-
+		bool found = false;
 		foreach (RaycastHit2D hit in hits.OrderBy(hit => Vector2.Distance(hit.transform.position, transform.position)))
 		{
-			bool found = false;
-
 			Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
 
 			if (interactable == null)
 				continue;
-
 
 			foreach (Interactable.Interaction interaction in interactable.interactions)
 			{
 				if (!interaction.active)
 					continue;
 
-				if (!openInteractions.Contains(interaction))
-				{
-					interaction.ShowIcon();
-					openInteractions.Add(interaction);
-				}
-
-				nearInteractions.Add(interaction);
-
-				if (Input.GetKeyDown(KeyCode.E))
-				{
-					interaction.execute(interaction);
-				}
-
 				found = true;
+
+				bool eligible = interaction.IsEligible(this);
+
+				if (openInteraction != interaction)
+				{
+					if (openInteraction != null)
+						openInteraction.HideIcon();
+
+					openInteraction = interaction;
+					openInteraction.ShowIcon(eligible);
+				}
+
+				Debug.Log(eligible && Input.GetKeyDown(KeyCode.E));
+				if (eligible && Input.GetKeyDown(KeyCode.E))
+				{
+					interaction.Execute(this);
+				}
+
 				break;
 			}
 
-			if (found)
-				break;
+			if (found) break;
 		}
 
-		List<Interactable.Interaction> toRemove = new List<Interactable.Interaction>();
-		foreach (Interactable.Interaction interaction in openInteractions)
+		if (!found && openInteraction != null)
 		{
-			if (!nearInteractions.Contains(interaction))
-				toRemove.Add(interaction);
-		}
-
-		foreach (Interactable.Interaction interaction in toRemove)
-		{
-			interaction.HideIcon();
-			openInteractions.Remove(interaction);
+			openInteraction.HideIcon();
+			openInteraction = null;
 		}
 	}
 }
