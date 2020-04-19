@@ -46,7 +46,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3.5
+  m_Radius: 0.1
 --- !u!1 &5836482251709018890
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5836482251709018890}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.79, y: -7.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -93,11 +93,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ca11605b0487c34887ecda8e8bea624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 1500
-  maxSteeringForce: 100
-  seekingForce: 500
-  personalSpace: 8
-  avoidanceForce: 800
+  maxVelocity: 100
+  maxSteeringForce: 10
+  seekingForce: 100
+  personalSpace: 1
+  avoidanceForce: 80
   collider: {fileID: 5836482250281187308}
   rigidbody: {fileID: 559276757674771906}
 --- !u!50 &559276757674771906
@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5836482251782803058}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5836482251709018888}
@@ -192,7 +192,8 @@ SpriteRenderer:
   m_SortingLayerID: 205277385
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f0f62689bba3e124ba683b76f60d1422, type: 3}
+  m_Sprite: {fileID: -1182821291677670348, guid: 76cf006080616ab43be0f266208129f6,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

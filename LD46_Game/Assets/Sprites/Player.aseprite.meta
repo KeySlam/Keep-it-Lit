@@ -29,8 +29,11 @@ ScriptedImporter:
   - animationName: WalkingBackward
     loopTime: 1
     about: "Animation Type:\tForward\r\nAnimation:\tFrom: 4; To: 7"
-  - animationName: WalkingObject
+  - animationName: WalkingMop
     loopTime: 1
     about: "Animation Type:\tForward\r\nAnimation:\tFrom: 8; To: 11"
+  - animationName: Walking Bowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 12; To: 15"
   atlas: {instanceID: 0}
   importType: 0
