@@ -59,5 +59,11 @@ ScriptedImporter:
   - animationName: IdleFullBottle
     loopTime: 1
     about: "Animation Type:\tForward\r\nAnimation:\tFrom: 28; To: 29"
+  - animationName: WalkingCD
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 30; To: 33"
+  - animationName: IdleCD
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 33; To: 34"
   atlas: {instanceID: 0}
   importType: 0

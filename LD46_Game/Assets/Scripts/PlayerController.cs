@@ -57,14 +57,12 @@ public class PlayerController : MonoBehaviour
 				{
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
-						Debug.Log("WalkingMop");
 						animator.Play("Player_WalkingMop");
 						return;
 					}
 				}
 				else
 				{
-					Debug.Log("WalkingBackward");
 					animator.Play("Player_Walking");
 					return;
 				}
@@ -75,14 +73,12 @@ public class PlayerController : MonoBehaviour
 				{
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
-						Debug.Log("WalkingMop");
 						animator.Play("Player_WalkingMop");
 						return;
 					}
 				}
 				else
 				{
-					Debug.Log("Walking");
 					animator.Play("Player_Walking");
 					return;
 				}
@@ -96,14 +92,12 @@ public class PlayerController : MonoBehaviour
 				{
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
-						Debug.Log("IdleMop");
 						animator.Play("Player_IdleMop");
 						return;
 					}
 				}
 				else
 				{
-					Debug.Log("Idle");
 					animator.Play("Player_Idle");
 					return;
 				}
@@ -114,14 +108,12 @@ public class PlayerController : MonoBehaviour
 				{
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
-						Debug.Log("IdleMop");
 						animator.Play("Player_IdleMop");
 						return;
 					}
 				}
 				else
 				{
-					Debug.Log("Idle");
 					animator.Play("Player_Idle");
 					return;
 				}
