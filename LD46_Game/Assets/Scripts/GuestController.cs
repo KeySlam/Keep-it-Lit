@@ -43,6 +43,12 @@ public class GuestController : MonoBehaviour
 	private InteractableIcon thirsty = null;
 
 	[SerializeField]
+	private InteractableIcon tooLoud = null;
+
+	[SerializeField]
+	private InteractableIcon tooSoft = null;
+
+	[SerializeField]
 	private Animator animator = null;
 
 	[SerializeField]
@@ -100,6 +106,16 @@ public class GuestController : MonoBehaviour
 		StartCoroutine(ThirstyRoutine());
 	}
 
+	public void TooLoud()
+	{
+		StartCoroutine(TooLoudRoutine());
+	}
+
+	public void TooSoft()
+	{
+		StartCoroutine(TooSoftRoutine());
+	}
+
 	private IEnumerator ConfusionRoutine()
 	{
 		confusion.Show();
@@ -130,6 +146,28 @@ public class GuestController : MonoBehaviour
 		yield return new WaitForSeconds(2.5f);
 
 		thirsty.Hide();
+		emoting = false;
+	}
+
+	private IEnumerator TooLoudRoutine()
+	{
+		tooLoud.Show();
+		emoting = true;
+
+		yield return new WaitForSeconds(4.0f);
+
+		tooLoud.Hide();
+		emoting = false;
+	}
+
+	private IEnumerator TooSoftRoutine()
+	{
+		tooSoft.Show();
+		emoting = true;
+
+		yield return new WaitForSeconds(4.0f);
+
+		tooSoft.Hide();
 		emoting = false;
 	}
 

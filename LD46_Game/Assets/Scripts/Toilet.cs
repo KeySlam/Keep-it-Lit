@@ -10,6 +10,9 @@ public class Toilet : Interactable
 	[SerializeField]
 	private Animator animator = null;
 
+	[SerializeField]
+	private Collider2D effector = null;
+
 	private bool flooded = false;
 	public bool Flooded
 	{
@@ -17,6 +20,8 @@ public class Toilet : Interactable
 		set
 		{
 			flooded = value;
+
+			effector.enabled = flooded;
 
 			UpdateAnimations();
 			UpdateInteractions();
@@ -80,6 +85,23 @@ public class Toilet : Interactable
 		Flooded = flooded;
 
 		interactions.Add(interactionCleanup);
+
+		StartCoroutine(FloodRoutine());
+	}
+
+	public IEnumerator FloodRoutine()
+	{
+		while (true)
+		{
+			if (this.flooded == false)
+			{
+				yield return new WaitForSeconds(Random.Range(5, 10));
+				this.Flooded = true;
+
+			}
+
+			yield return null;
+		}
 	}
 
 	public float Boing(float k)

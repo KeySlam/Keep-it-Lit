@@ -24,17 +24,6 @@ public class MessageBox : MonoBehaviour
 		rectTransform = GetComponent<RectTransform>();
 	}
 
-	private string[] messages = new string[]
-	{
-		"Look at this!",
-		"Its working!!",
-		"And it even features\nmultiple lines!",
-		"Wow",
-		"...",
-		"cool",
-	};
-	private int index = 0;
-
 	private void Show()
 	{
 		if (visCoroutine != null)
@@ -66,15 +55,7 @@ public class MessageBox : MonoBehaviour
 		parent.anchoredPosition = new Vector3(0, 0, 0);
 	}
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			NewMessage("@DebugPerson", messages[index++]);
-		}
-	}
-
-	private void NewMessage(string title, string content)
+	public void NewMessage(string title, string content)
 	{
 		if (coroutine != null)
 		{

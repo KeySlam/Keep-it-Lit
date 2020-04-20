@@ -43,7 +43,7 @@ public partial class Stereo : Interactable
 			if (playerController.carrying == null || playerController.carrying.GetType() != typeof(CarryableCD))
 			{
 				stereo.volume += 1;
-				if (stereo.volume == 3)
+				if (stereo.volume == 2)
 					stereo.volume = 0;
 			}
 			else
