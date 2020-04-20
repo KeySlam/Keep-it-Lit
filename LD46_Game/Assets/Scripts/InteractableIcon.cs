@@ -6,17 +6,17 @@ public class InteractableIcon : MonoBehaviour
 	[SerializeField]
 	private SpriteRenderer spriteRenderer = null;
 
-	private float showDuration = 0.6f;
-	private float hideDuration = 0.3f;
+	public float showDuration = 0.6f;
+	public float hideDuration = 0.3f;
 
-	private Coroutine current = null;
+	public Coroutine current = null;
 
 	private void Awake()
 	{
 		spriteRenderer.enabled = false;
 	}
 
-	public void Show()
+	public virtual void Show()
 	{
 		if (current != null)
 			StopCoroutine(current);
@@ -24,10 +24,9 @@ public class InteractableIcon : MonoBehaviour
 		current = StartCoroutine(ShowRoutine());
 	}
 
-	private IEnumerator ShowRoutine()
+	public virtual IEnumerator ShowRoutine()
 	{
 		spriteRenderer.enabled = true;
-
 
 		transform.localScale = new Vector3(0, 0, 1);
 
@@ -49,7 +48,7 @@ public class InteractableIcon : MonoBehaviour
 		transform.localScale = new Vector3(1, 1, 1);
 	}
 
-	public void Hide()
+	public virtual void Hide()
 	{
 		if (current != null)
 			StopCoroutine(current);
@@ -57,7 +56,7 @@ public class InteractableIcon : MonoBehaviour
 		current = StartCoroutine(HideRoutine());
 	}
 
-	private IEnumerator HideRoutine()
+	public virtual IEnumerator HideRoutine()
 	{
 		transform.localScale = new Vector3(1, 1, 1);
 

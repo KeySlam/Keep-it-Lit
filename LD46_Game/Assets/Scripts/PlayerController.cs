@@ -46,9 +46,6 @@ public class PlayerController : MonoBehaviour
 
 	private void UpdateAnimation(bool moving, bool facing)
 	{
-		Debug.Log(moving);
-
-
 		if (moving)
 		{
 			if (facing)
@@ -58,6 +55,11 @@ public class PlayerController : MonoBehaviour
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
 						animator.Play("Player_WalkingMop");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableCD))
+					{
+						animator.Play("Player_WalkingCD");
 						return;
 					}
 				}
@@ -74,6 +76,11 @@ public class PlayerController : MonoBehaviour
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
 						animator.Play("Player_WalkingMop");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableCD))
+					{
+						animator.Play("Player_WalkingCD");
 						return;
 					}
 				}
@@ -109,6 +116,11 @@ public class PlayerController : MonoBehaviour
 					if (carrying.GetType() == typeof(CarryableMop))
 					{
 						animator.Play("Player_IdleMop");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableCD))
+					{
+						animator.Play("Player_IdleCD");
 						return;
 					}
 				}
@@ -158,6 +170,8 @@ public class PlayerController : MonoBehaviour
 
 			foreach (Interactable.Interaction interaction in interactable.interactions)
 			{
+				interaction.Check(this);
+
 				if (!interaction.active)
 					continue;
 
@@ -174,7 +188,6 @@ public class PlayerController : MonoBehaviour
 					openInteraction.ShowIcon(eligible);
 				}
 
-				Debug.Log(eligible && Input.GetKeyDown(KeyCode.E));
 				if (eligible && Input.GetKeyDown(KeyCode.E))
 				{
 					interaction.Execute(this);

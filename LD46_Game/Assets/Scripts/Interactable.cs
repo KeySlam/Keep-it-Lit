@@ -38,6 +38,7 @@ public abstract class Interactable : MonoBehaviour
 			activeIcon = null;
 		}
 
+		public virtual void Check(PlayerController playerController) { }
 		public abstract void Execute(PlayerController playerController);
 		public abstract bool IsEligible(PlayerController playerController);
 	}

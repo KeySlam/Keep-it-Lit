@@ -9,6 +9,18 @@ public partial class Stereo : Interactable
 	[SerializeField]
 	private Animator animator = null;
 
+	public AudioController audioController = null;
+
+	private AudioSource audioSource = null;
+
+	[HideInInspector]
+	public int tracksLeft = 0;
+
+	[HideInInspector]
+	public int volume = 0;
+
+	[HideInInspector]
+	public float progress = 2;
 
 
 	private void UpdateView()
@@ -36,18 +48,25 @@ public partial class Stereo : Interactable
 
 		public override void Execute(PlayerController playerController)
 		{
-			//this.mop.StartCoroutine(ExecuteRoutine(playerController));
+			if (playerController.carrying == null)
+				return;
+
+			if (playerController.carrying.GetType() != typeof(CarryableCD))
+				return;
+
+			if (stereo.tracksLeft == 1)
+				return;
+
+			this.stereo.StartCoroutine(ExecuteRoutine(playerController));
 		}
 
 		public IEnumerator ExecuteRoutine(PlayerController playerController)
 		{
-			yield return null;
-			/*
-			mop.HasMop = false;
-			playerController.carrying = new CarryablePlaceholder();
+			playerController.carrying = null;
+			stereo.tracksLeft++;
 
-			mop.transform.localScale = new Vector3(1, 1, 1);
-			Vector3 start = mop.animator.transform.localPosition;
+			stereo.animator.transform.localScale = new Vector3(1, 1, 1);
+			Vector3 start = stereo.animator.transform.localPosition;
 
 			float progress = 0;
 			float time = 0;
@@ -56,24 +75,18 @@ public partial class Stereo : Interactable
 			{
 				time += Time.deltaTime;
 
-				if (playerController.carrying.GetType() != typeof(CarryableMop) && time >= 0.2)
-				{
-					playerController.carrying = new CarryableMop();
-				}
-
 				progress = time / 0.4f;
 
-				float s = mop.Boing(progress) / 6;
+				float s = stereo.Boing(progress) / 6;
 
 				//mop.transform.localScale = new Vector3(1, 1 - s, 1);
-				mop.animator.transform.localPosition = start + new Vector3(0, s, 0);
+				stereo.animator.transform.localPosition = start + new Vector3(0, s, 0);
 
 				yield return null;
 			}
 
-			mop.animator.transform.localScale = new Vector3(1, 1, 1);
-			mop.animator.transform.localPosition = start;
-			*/
+			stereo.animator.transform.localScale = new Vector3(1, 1, 1);
+			stereo.animator.transform.localPosition = start;
 		}
 
 		public override bool IsEligible(PlayerController playerController)
@@ -86,11 +99,31 @@ public partial class Stereo : Interactable
 
 	public void Awake()
 	{
+		progress = 1;
+		tracksLeft = 0;
+		volume = 1;
+
 		interaction = new InteractionStereo(this, stereoUI, stereoUI, true);
 
-		//HasMop = hasMop;
-
 		interactions.Add(interaction);
+	}
+
+	public void Update()
+	{
+		if (audioSource != null)
+		{
+			progress = audioSource.time / audioSource.clip.length;
+		}
+
+		if (progress >= 1)
+		{
+			if (tracksLeft != 0)
+			{
+				audioSource = audioController.PlayTrack();
+				tracksLeft--;
+				progress = 0;
+			}
+		}
 	}
 
 	public float Boing(float k)

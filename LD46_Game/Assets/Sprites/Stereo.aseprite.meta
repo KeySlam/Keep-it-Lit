@@ -26,5 +26,8 @@ ScriptedImporter:
   - animationName: Playing
     loopTime: 1
     about: "Animation Type:\tForward\r\nAnimation:\tFrom: 0; To: 1"
+  - animationName: Idle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 0; To: 0"
   atlas: {instanceID: 0}
   importType: 0
