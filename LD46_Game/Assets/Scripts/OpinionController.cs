@@ -9,6 +9,7 @@ public class OpinionController : MonoBehaviour
 	private GlassConsumeStation[] glassConsumeStation;
 	private Toilet[] toilets;
 	private Stereo stereo;
+	private Puke[] pukes;
 	private MessageBox messageBox;
 
 
@@ -123,10 +124,13 @@ public class OpinionController : MonoBehaviour
 	private Coroutine glassRoutine = null;
 	private Coroutine volumeRoutine = null;
 	private Coroutine floodRoutine = null;
+	private Coroutine pukeRoutine = null;
 
 	public int foodCount;
 	public int glassCount;
 	public int floodCount;
+	public int pukeCount;
+
 	public bool playing;
 
 	private LitController litController;
@@ -142,6 +146,7 @@ public class OpinionController : MonoBehaviour
 		popcornConsumeStations = FindObjectsOfType<PopcornConsumeStation>();
 		glassConsumeStation = FindObjectsOfType<GlassConsumeStation>();
 		toilets = FindObjectsOfType<Toilet>();
+		pukes = FindObjectsOfType<Puke>();
 		stereo = FindObjectOfType<Stereo>();
 		litController = FindObjectOfType<LitController>();
 		messageBox = FindObjectOfType<MessageBox>();
@@ -156,6 +161,7 @@ public class OpinionController : MonoBehaviour
 		foodCount = popcornConsumeStations.Sum(item => item.BowlCount);
 		glassCount = glassConsumeStation.Sum(item => item.BottleCount);
 		floodCount = toilets.Count(item => item.Flooded);
+		pukeCount = pukes.Count(item => item.Flooded);
 		playing = stereo.playing;
 
 		if (playing == false && wasPlaying == true)
@@ -187,6 +193,11 @@ public class OpinionController : MonoBehaviour
 				floodRoutine = StartCoroutine(FloodTimeout());
 		}
 
+		if (pukeCount > 0)
+		{
+			if (pukeRoutine == null)
+				pukeRoutine = StartCoroutine(PukeTimeout());
+		}
 		
 
 
@@ -306,6 +317,19 @@ public class OpinionController : MonoBehaviour
 		floodRoutine = null;
 	}
 
+	private IEnumerator PukeTimeout()
+	{
+		yield return new WaitForSeconds(10.0f);
+
+		while (floodCount > 0)
+		{
+			litController.Litness -= 0.5f * Time.deltaTime;
+
+			yield return null;
+		}
+
+		pukeRoutine = null;
+	}
 
 	private IEnumerator Confuse()
 	{
