@@ -16,7 +16,7 @@ ScriptedImporter:
     meshType: 1
     extrudeEdges: 0
     spritePivot: {x: 0.5, y: 0}
-    generatePhysics: 0
+    generatePhysics: 1
     wrapMode: 1
     filterMode: 0
     tileSize: {x: 32, y: 32}
@@ -26,14 +26,38 @@ ScriptedImporter:
   - animationName: Walking
     loopTime: 1
     about: "Animation Type:\tForward\r\nAnimation:\tFrom: 0; To: 3"
-  - animationName: WalkingBackward
+  - animationName: Idle
     loopTime: 1
-    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 4; To: 7"
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 3; To: 4"
   - animationName: WalkingMop
     loopTime: 1
-    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 8; To: 11"
-  - animationName: Walking Bowl
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 5; To: 8"
+  - animationName: IdleMop
     loopTime: 1
-    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 12; To: 15"
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 8; To: 9"
+  - animationName: WalkingEmptyBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 10; To: 13"
+  - animationName: IdleEmptyBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 13; To: 14"
+  - animationName: WalkingFullBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 15; To: 18"
+  - animationName: IdleFullBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 18; To: 19"
+  - animationName: WalkingEmptyBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 20; To: 23"
+  - animationName: IdleEmptyBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 23; To: 24"
+  - animationName: WalkingFullBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 25; To: 28"
+  - animationName: IdleFullBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 28; To: 29"
   atlas: {instanceID: 0}
   importType: 0

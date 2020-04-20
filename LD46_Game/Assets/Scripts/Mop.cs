@@ -53,9 +53,7 @@ public class Mop : Interactable
 		public override void Execute(PlayerController playerController)
 		{
 			mop.HasMop = false;
-			playerController.carrying = new CarryableMop();
-
-			Debug.Log("Took mop");
+			playerController.carrying = new CarryableGlass();
 		}
 
 		public override bool IsEligible(PlayerController playerController)
@@ -77,8 +75,6 @@ public class Mop : Interactable
 		{
 			mop.HasMop = true;
 			playerController.carrying = null;
-
-			Debug.Log("Returned mop");
 		}
 
 		public override bool IsEligible(PlayerController playerController)

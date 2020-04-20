@@ -44,34 +44,87 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	private void UpdateAnimation(bool facing)
+	private void UpdateAnimation(bool moving, bool facing)
 	{
-		if (facing)
+		Debug.Log(moving);
+
+
+		if (moving)
 		{
-			if (carrying != null)
+			if (facing)
 			{
-				if (carrying.GetType() == typeof(CarryableMop))
+				if (carrying != null)
 				{
-					animator.Play("Player_WalkingMop");
+					if (carrying.GetType() == typeof(CarryableMop))
+					{
+						Debug.Log("WalkingMop");
+						animator.Play("Player_WalkingMop");
+						return;
+					}
+				}
+				else
+				{
+					Debug.Log("WalkingBackward");
+					animator.Play("Player_Walking");
+					return;
 				}
 			}
 			else
 			{
-				animator.Play("Player_WalkingBackward");
+				if (carrying != null)
+				{
+					if (carrying.GetType() == typeof(CarryableMop))
+					{
+						Debug.Log("WalkingMop");
+						animator.Play("Player_WalkingMop");
+						return;
+					}
+				}
+				else
+				{
+					Debug.Log("Walking");
+					animator.Play("Player_Walking");
+					return;
+				}
 			}
 		}
 		else
 		{
-			if (carrying != null)
+			if (facing)
 			{
-				if (carrying.GetType() == typeof(CarryableMop))
+				if (carrying != null)
 				{
-					animator.Play("Player_WalkingMop");
+					if (carrying.GetType() == typeof(CarryableMop))
+					{
+						Debug.Log("IdleMop");
+						animator.Play("Player_IdleMop");
+						return;
+					}
+				}
+				else
+				{
+					Debug.Log("Idle");
+					animator.Play("Player_Idle");
+					return;
 				}
 			}
 			else
 			{
-				animator.Play("Player_Walking");
+				if (carrying != null)
+				{
+					if (carrying.GetType() == typeof(CarryableMop))
+					{
+						Debug.Log("IdleMop");
+						animator.Play("Player_IdleMop");
+						return;
+					}
+				}
+				else
+				{
+					Debug.Log("Idle");
+					animator.Play("Player_Idle");
+					return;
+				}
 			}
 		}
 	}
@@ -87,7 +140,7 @@ public class PlayerController : MonoBehaviour
 			UpdateFacing();
 		}
 
-		UpdateAnimation(vertical > 0);
+		UpdateAnimation(horizontal != 0 || vertical != 0, vertical > 0);
 
 		bool interacting = Input.GetKeyDown(KeyCode.E);
 
