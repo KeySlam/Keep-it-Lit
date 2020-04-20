@@ -8,51 +8,58 @@ public class GlassConsumeStation : Interactable
 	private InteractableIcon glassPutIcon = null;
 
 	[SerializeField]
-	private Sprite glassFull = null;
+	private Animator animator = null;
 
-	[SerializeField]
-	private Sprite glassEmpty = null;
-
-	[SerializeField]
-	private bool isGlassFull = false;
-	private bool IsGlassFull
+	private int bottleCount = 3;
+	public int BottleCount
 	{
-		get { return isGlassFull; }
+		get { return bottleCount; }
 		set
 		{
-			isGlassFull = value;
+			bottleCount = value;
 
-			interactionPutGlass.active = !isGlassFull;
-
+			UpdateInteractions();
 			UpdateView();
+		}
+	}
+
+	private void UpdateInteractions()
+	{
+		if (bottleCount < 3)
+		{
+			interactionPutGlass.active = true;
+		}
+		else
+		{
+			interactionPutGlass.active = false;
 		}
 	}
 
 	private void UpdateView()
 	{
-		if (IsGlassFull)
-		{
-			GetComponent<SpriteRenderer>().sprite = glassFull;
-		}
-		else
-		{
-			GetComponent<SpriteRenderer>().sprite = glassEmpty;
-			StartCoroutine(Empty());
-		}
+		if (bottleCount == 0)
+			animator.Play("Table_Bottles0");
+		else if (bottleCount == 1)
+			animator.Play("Table_Bottles1");
+		else if (bottleCount == 2)
+			animator.Play("Table_Bottles2");
+		else if (bottleCount == 3)
+			animator.Play("Table_Bottles3");
 	}
 
 	public class InteractionPutGlass : Interaction
 	{
 		GlassConsumeStation glassConsumeStation = null;
 
-		public InteractionPutGlass(GlassConsumeStation glassConsumeStation, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionPutGlass(GlassConsumeStation glassConsumeStation, InteractableIcon icon, bool active = true) : base(icon, active)
 		{
 			this.glassConsumeStation = glassConsumeStation;
 		}
 
 		public override void Execute(PlayerController playerController)
 		{
-			glassConsumeStation.IsGlassFull = true;
+			Debug.Log("Add: " + glassConsumeStation.BottleCount);
+			glassConsumeStation.BottleCount++;
 			playerController.carrying = null;
 		}
 
@@ -61,22 +68,30 @@ public class GlassConsumeStation : Interactable
 			return (playerController.carrying != null && playerController.carrying.GetType() == typeof(CarryableGlass));
 		}
 	}
-;
-	public IEnumerator Empty()
-	{
-		yield return new WaitForSeconds(3.0f);
-
-		IsGlassFull = false;
-	}
 
 	private InteractionPutGlass interactionPutGlass = null;
 
 	public void Awake()
 	{
-		interactionPutGlass = new InteractionPutGlass(this, glassPutIcon, notEligibleIcon, true);
+		interactionPutGlass = new InteractionPutGlass(this, glassPutIcon, true);
 
-		IsGlassFull = isGlassFull;
+		BottleCount = bottleCount;
 
 		interactions.Add(interactionPutGlass);
+		StartCoroutine(DepleteRoutine());
+	}
+
+	public IEnumerator DepleteRoutine()
+	{
+		while (true)
+		{
+			if (BottleCount > 0)
+			{
+				yield return new WaitForSeconds(Random.Range(5, 10));
+				BottleCount--;
+			}
+
+			yield return null;
+		}
 	}
 }

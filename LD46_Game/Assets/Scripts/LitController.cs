@@ -36,8 +36,6 @@ public class LitController : MonoBehaviour
 	{
 		int targetPeople = (int)(Litness * 45) + 5;
 
-		Debug.Log(targetPeople);
-
 		if (targetPeople > peopleIn)
 		{
 			if (isEntering == false)

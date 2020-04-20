@@ -8,7 +8,7 @@ public class StereoUI : InteractableIcon
 
 	public SpriteRenderer bgSprite = null;
 	public SpriteRenderer volumeSprite = null;
-	public SpriteRenderer progress = null;
+	public SpriteRenderer progressBar = null;
 
 	public Animator bg = null;
 	public Animator volume = null;
@@ -31,13 +31,14 @@ public class StereoUI : InteractableIcon
 			bg.Play("Stereo UI_CD2");
 		}
 
-		progress.transform.localScale = new Vector3(stereo.progress * 30, 2, 1);
+		progressBar.transform.localScale = new Vector3(stereo.progress * 30, 2, 1);
 	}
 
 	private void Awake()
 	{
 		bgSprite.enabled = false;
 		volumeSprite.enabled = false;
+		progressBar.enabled = false;
 	}
 
 
@@ -58,6 +59,7 @@ public class StereoUI : InteractableIcon
 	{
 		bgSprite.enabled = true;
 		volumeSprite.enabled = true;
+		progressBar.enabled = true;
 
 		transform.localScale = new Vector3(0, 0, 1);
 

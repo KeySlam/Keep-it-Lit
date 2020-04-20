@@ -27,8 +27,7 @@ public class PlayerController : MonoBehaviour
 	private new Rigidbody2D rigidbody = null;
 
 	public Carryable carrying = null;
-	private Interactable.Interaction openInteraction = null;
-	private Interactable.Interaction prefInteraction = null;
+	private InteractableIcon openIcon = null;
 
 	private bool facing = false;
 
@@ -62,6 +61,18 @@ public class PlayerController : MonoBehaviour
 						animator.Play("Player_WalkingCD");
 						return;
 					}
+					else if (carrying.GetType() == typeof(CarryableGlass))
+					{
+						animator.Play("Player_WalkingFullBottle");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableBowl))
+					{
+						if (((CarryableBowl)carrying).empty)
+							animator.Play("Player_WalkingEmptyBowl");
+						else
+							animator.Play("Player_WalkingFullBowl");
+					}
 				}
 				else
 				{
@@ -83,6 +94,18 @@ public class PlayerController : MonoBehaviour
 						animator.Play("Player_WalkingCD");
 						return;
 					}
+					else if (carrying.GetType() == typeof(CarryableGlass))
+					{
+						animator.Play("Player_WalkingFullBottle");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableBowl))
+					{
+						if (((CarryableBowl)carrying).empty)
+							animator.Play("Player_WalkingEmptyBowl");
+						else
+							animator.Play("Player_WalkingFullBowl");
+					}
 				}
 				else
 				{
@@ -101,6 +124,23 @@ public class PlayerController : MonoBehaviour
 					{
 						animator.Play("Player_IdleMop");
 						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableCD))
+					{
+						animator.Play("Player_IdleCD");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableGlass))
+					{
+						animator.Play("Player_IdleFullBottle");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableBowl))
+					{
+						if (((CarryableBowl)carrying).empty)
+							animator.Play("Player_IdleEmptyBowl");
+						else
+							animator.Play("Player_IdleFullBowl");
 					}
 				}
 				else
@@ -122,6 +162,18 @@ public class PlayerController : MonoBehaviour
 					{
 						animator.Play("Player_IdleCD");
 						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableGlass))
+					{
+						animator.Play("Player_IdleFullBottle");
+						return;
+					}
+					else if (carrying.GetType() == typeof(CarryableBowl))
+					{
+						if (((CarryableBowl)carrying).empty)
+							animator.Play("Player_IdleEmptyBowl");
+						else
+							animator.Play("Player_IdleFullBowl");
 					}
 				}
 				else
@@ -160,7 +212,7 @@ public class PlayerController : MonoBehaviour
 		RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, interactionRange, Vector2.zero);
 		collider.enabled = true;
 
-		bool found = false;
+		Interactable foundInteractable = null;
 		foreach (RaycastHit2D hit in hits.OrderBy(hit => Vector2.Distance(hit.transform.position, transform.position)))
 		{
 			Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
@@ -170,41 +222,52 @@ public class PlayerController : MonoBehaviour
 
 			foreach (Interactable.Interaction interaction in interactable.interactions)
 			{
-				interaction.Check(this);
-
-				if (!interaction.active)
-					continue;
-
-				found = true;
-
-				bool eligible = interaction.IsEligible(this);
-
-				if (openInteraction != interaction)
+				if (interaction.active)
 				{
-					if (openInteraction != null)
-						openInteraction.HideIcon();
+					foundInteractable = interactable;
 
-					openInteraction = interaction;
-					openInteraction.ShowIcon(eligible);
+					bool eligible = interaction.IsEligible(this);
+
+					if (eligible)
+					{
+						InteractableIcon icon = interaction.icon;
+
+						if (openIcon != icon)
+						{
+							if (openIcon != null)
+								openIcon.Hide();
+
+							openIcon = icon;
+							openIcon.Show();
+						}
+
+						if (Input.GetKeyDown(KeyCode.E))
+						{
+							interaction.Execute(this);
+
+							//openIcon.Show();
+							//openIcon = null;
+
+							break;
+						}
+					}
 				}
-
-				if (eligible && Input.GetKeyDown(KeyCode.E))
-				{
-					interaction.Execute(this);
-				}
-
-				break;
 			}
-
-			if (found) break;
 		}
 
-		if (!found && openInteraction != null)
+		if (foundInteractable != null && openIcon == null)
 		{
-			openInteraction.HideIcon();
-			openInteraction = null;
+			openIcon = foundInteractable.notEligibleIcon;
+			openIcon.Show();
 		}
 
+		if (foundInteractable == null && openIcon != null)
+		{
+			openIcon.Hide();
+			openIcon = null;
+		}
+
+		/*
 		GuestController[] guestControllers = FindObjectsOfType<GuestController>();
 		float weight = 0;
 		foreach (GuestController guestController in guestControllers)
@@ -214,5 +277,6 @@ public class PlayerController : MonoBehaviour
 		}
 
 		audioController.UpdateCrowd(weight);
+		*/
 	}
 }

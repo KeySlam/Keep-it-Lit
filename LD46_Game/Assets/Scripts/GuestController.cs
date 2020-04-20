@@ -25,20 +25,170 @@ public class GuestController : MonoBehaviour
 	[SerializeField]
 	private new Rigidbody2D rigidbody = null;
 
+	private PlaceSelector placeSelector = null;
+
 	private Vector2 velocity = default;
 	private Vector2 steering = default;
 
+	private Plac place = null;
 	private Vector2 seekTarget = default;
+
+	[SerializeField]
+	private InteractableIcon confusion = null;
+
+	[SerializeField]
+	private InteractableIcon hungry = null;
+
+	[SerializeField]
+	private InteractableIcon thirsty = null;
+
+	[SerializeField]
+	private Animator animator = null;
+
+	[SerializeField]
+	private Transform spriteWrapper = null;
 
 	private bool alive = false;
 
+	private bool dancing = false;
+
+	private Stereo stereo = null;
+
+	bool facing = false;
+
 	private void Awake()
 	{
+		placeSelector = FindObjectOfType<PlaceSelector>();
+		stereo = FindObjectOfType<Stereo>();
+	}
 
+	private void UpdateAnimations()
+	{
+		if (facing && velocity.x > 0.03)
+		{
+			spriteWrapper.localScale = new Vector3(1, 1, 1);
+			facing = false;
+		}
+		else if (!facing && velocity.x < -0.03)
+		{
+			spriteWrapper.localScale = new Vector3(-1, 1, 1);
+			facing = true;
+		}
+
+		if (dancing)
+			animator.Play("MaleCharacter_Dancing");
+		else if (velocity.magnitude > 0.03)
+			animator.Play("MaleCharacter_Walk");
+		else
+			animator.Play("MaleCharacter_Idle");
+	}
+
+	public bool emoting = false;
+
+	public void Confusion()
+	{
+		StartCoroutine(ConfusionRoutine());
+	}
+
+	public void Hungry()
+	{
+		StartCoroutine(HungryRoutine());
+	}
+
+	public void Thirsty()
+	{
+		StartCoroutine(ThirstyRoutine());
+	}
+
+	private IEnumerator ConfusionRoutine()
+	{
+		confusion.Show();
+		emoting = true;
+
+		yield return new WaitForSeconds(2.5f);
+
+		confusion.Hide();
+		emoting = false;
+	}
+
+	private IEnumerator HungryRoutine()
+	{
+		hungry.Show();
+		emoting = true;
+
+		yield return new WaitForSeconds(2.5f);
+
+		hungry.Hide();
+		emoting = false;
+	}
+
+	private IEnumerator ThirstyRoutine()
+	{
+		thirsty.Show();
+		emoting = true;
+
+		yield return new WaitForSeconds(2.5f);
+
+		thirsty.Hide();
+		emoting = false;
+	}
+
+	private IEnumerator AI()
+	{
+		FindTarget();
+		yield return new WaitForSeconds(UnityEngine.Random.Range(2, 5));
+
+		while (true)
+		{
+			int choice = UnityEngine.Random.Range(0, 3);
+
+			if (choice == 0)
+			{
+				// Idle
+				yield return new WaitForSeconds(UnityEngine.Random.Range(4, 15));
+			}
+			else if (choice == 1)
+			{
+				if (stereo.playing)
+				{
+					dancing = true;
+
+					float t = 0;
+					float targetT = UnityEngine.Random.Range(6, 14);
+					while (t < targetT)
+					{
+						if (stereo.playing == false)
+						{
+							break;
+						}
+
+						yield return null;
+					}
+
+					dancing = false;
+				}
+			}
+			else if (choice == 2)
+			{
+				FindTarget();
+				yield return new WaitForSeconds(UnityEngine.Random.Range(4, 7));
+			}
+
+			yield return null;
+		}	
+	}
+
+	private void FindTarget()
+	{
+		place = placeSelector.GetPlace();
+
+		seekTarget = (Vector2)place.transform.position + (Vector2)UnityEngine.Random.insideUnitSphere * place.radius;
 	}
 
 	public IEnumerator Spawn()
 	{
+		StartCoroutine(AI());
+
 		transform.localScale = new Vector3(0, 0, 0);
 
 		float progress = 0;
@@ -90,7 +240,6 @@ public class GuestController : MonoBehaviour
 		if (alive == false)
 			return;
 
-		seekTarget = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		steering = Vector2.zero;
 
 		Seek();
@@ -106,8 +255,23 @@ public class GuestController : MonoBehaviour
 		rigidbody.position += velocity;
 	}
 
+	private void Update()
+	{
+		UpdateAnimations();
+	}
+	
 	private void Seek()
 	{
+		float dist = Vector2.Distance(seekTarget, transform.position);
+		if (dist < 2)
+		{
+			return;
+		}
+
+		RaycastHit2D[] hits = Physics2D.CircleCastAll(seekTarget, 0.35f, Vector2.zero);
+		if (hits.Length > 0)
+			return;
+
 		Vector2 desiredVelocity = (seekTarget - (Vector2)transform.position).normalized * maxVelocity;
 		Vector2 steering = desiredVelocity - velocity;
 

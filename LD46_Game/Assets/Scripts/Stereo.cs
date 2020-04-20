@@ -14,50 +14,42 @@ public partial class Stereo : Interactable
 	private AudioSource audioSource = null;
 
 	[HideInInspector]
-	public int tracksLeft = 0;
+	public int tracksLeft = 1;
 
 	[HideInInspector]
 	public int volume = 0;
 
 	[HideInInspector]
-	public float progress = 2;
+	public float progress = 0;
 
+	public bool playing = false;
 
 	private void UpdateView()
 	{
-		/*
-		if (HasMop)
-		{
-			animator.Play("Mop_Leave");
-		}
-		else
-		{
-			animator.Play("Mop_Take");
-		}
-		*/
+
 	}
 
 	public class InteractionStereo : Interaction
 	{
 		Stereo stereo= null;
 
-		public InteractionStereo(Stereo stereo, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionStereo(Stereo stereo, InteractableIcon icon, bool active = true) : base(icon, active)
 		{
 			this.stereo = stereo;
 		}
 
 		public override void Execute(PlayerController playerController)
 		{
-			if (playerController.carrying == null)
-				return;
-
-			if (playerController.carrying.GetType() != typeof(CarryableCD))
-				return;
-
-			if (stereo.tracksLeft == 1)
-				return;
-
-			this.stereo.StartCoroutine(ExecuteRoutine(playerController));
+			if (playerController.carrying == null || playerController.carrying.GetType() != typeof(CarryableCD))
+			{
+				stereo.volume += 1;
+				if (stereo.volume == 3)
+					stereo.volume = 0;
+			}
+			else
+			{
+				this.stereo.StartCoroutine(ExecuteRoutine(playerController));
+			}
 		}
 
 		public IEnumerator ExecuteRoutine(PlayerController playerController)
@@ -99,27 +91,36 @@ public partial class Stereo : Interactable
 
 	public void Awake()
 	{
-		progress = 1;
+		progress = 0;
 		tracksLeft = 0;
 		volume = 1;
 
-		interaction = new InteractionStereo(this, stereoUI, stereoUI, true);
+		audioSource = audioController.PlayTrack();
+
+		interaction = new InteractionStereo(this, stereoUI, true);
 
 		interactions.Add(interaction);
 	}
 
 	public void Update()
 	{
-		if (audioSource != null)
-		{
-			progress = audioSource.time / audioSource.clip.length;
-		}
+		progress = audioSource.time / audioSource.clip.length;
 
-		if (progress >= 1)
+		playing = audioSource.isPlaying;
+
+		if (volume == 0)
+			audioSource.volume = 0.3f;
+		else if (volume == 1)
+			audioSource.volume = 0.5f;
+		else if (volume == 2)
+			audioSource.volume = 0.7f;
+
+		if (!audioSource.isPlaying)
 		{
 			if (tracksLeft != 0)
 			{
 				audioSource = audioController.PlayTrack();
+				playing = true;
 				tracksLeft--;
 				progress = 0;
 			}

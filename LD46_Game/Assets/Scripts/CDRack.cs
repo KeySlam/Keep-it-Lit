@@ -16,7 +16,7 @@ public class CDRack : Interactable
 	{
 		CDRack cdRack = null;
 
-		public InteractionTakeCD(CDRack cdRack, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionTakeCD(CDRack cdRack, InteractableIcon icon, bool active = true) : base(icon, active)
 		{
 			this.cdRack = cdRack;
 		}
@@ -69,7 +69,7 @@ public class CDRack : Interactable
 	{
 		CDRack cdRack = null;
 
-		public InteractionReturnCD(CDRack cdRack, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionReturnCD(CDRack cdRack, InteractableIcon icon, bool active = true) : base(icon, active)
 		{
 			this.cdRack = cdRack;
 		}
@@ -122,8 +122,8 @@ public class CDRack : Interactable
 
 	public void Awake()
 	{
-		interactionTakeCD = new InteractionTakeCD(this, cdTakeIcon, notEligibleIcon);
-		interactionReturnCD = new InteractionReturnCD(this, cdReturnIcon, notEligibleIcon);
+		interactionTakeCD = new InteractionTakeCD(this, cdTakeIcon);
+		interactionReturnCD = new InteractionReturnCD(this, cdReturnIcon);
 
 		interactions.Add(interactionTakeCD);
 		interactions.Add(interactionReturnCD);

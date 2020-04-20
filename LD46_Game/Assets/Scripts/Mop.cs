@@ -43,7 +43,7 @@ public class Mop : Interactable
 	{
 		Mop mop = null;
 
-		public InteractionTakeMop(Mop mop, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionTakeMop(Mop mop, InteractableIcon icon , bool active = true) : base(icon, active)
 		{
 			this.mop = mop;
 		}
@@ -97,7 +97,7 @@ public class Mop : Interactable
 	{
 		Mop mop = null;
 
-		public InteractionReturnMop(Mop mop, InteractableIcon icon, InteractableIcon iconNotEligible, bool active = true) : base(icon, iconNotEligible, active)
+		public InteractionReturnMop(Mop mop, InteractableIcon icon, bool active = true) : base(icon, active)
 		{
 			this.mop = mop;
 		}
@@ -146,8 +146,8 @@ public class Mop : Interactable
 
 	public void Awake()
 	{
-		interactionTakeMop = new InteractionTakeMop(this, mopTakeIcon, notEligibleIcon);
-		interactionReturnMop = new InteractionReturnMop(this, mopReturnIcon, notEligibleIcon);
+		interactionTakeMop = new InteractionTakeMop(this, mopTakeIcon);
+		interactionReturnMop = new InteractionReturnMop(this, mopReturnIcon);
 
 		HasMop = hasMop;
 

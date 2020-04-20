@@ -1,0 +1,54 @@
+fileFormatVersion: 2
+guid: 53782f09f1e6467499a5243b99afc483
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 25a63327f814cd04cbdbd7e8ae6dfcf9, type: 3}
+  textureSettings:
+    textureType: 8
+    pixelsPerUnit: 16
+    transparentMask: 0
+    transparentColor: {r: 1, g: 0, b: 1, a: 1}
+    meshType: 1
+    extrudeEdges: 1
+    spritePivot: {x: 0.525, y: 0}
+    generatePhysics: 0
+    wrapMode: 1
+    filterMode: 0
+    tileSize: {x: 32, y: 32}
+    tilePadding: {x: 0, y: 0}
+    tileOffset: {x: 0, y: 0}
+  animationSettings:
+  - animationName: Mop
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 0; To: 0"
+  - animationName: CD
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 1; To: 1"
+  - animationName: VolumePlus
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 2; To: 2"
+  - animationName: VolumeMinus
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 3; To: 3"
+  - animationName: Music
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 4; To: 4"
+  - animationName: FullBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 5; To: 5"
+  - animationName: EmptyBottle
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 6; To: 6"
+  - animationName: FullBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 7; To: 7"
+  - animationName: EmptyBowl
+    loopTime: 1
+    about: "Animation Type:\tForward\r\nAnimation:\tFrom: 8; To: 8"
+  atlas: {instanceID: 0}
+  importType: 0
